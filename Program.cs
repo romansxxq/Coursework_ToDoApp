@@ -12,6 +12,7 @@ builder.Services.AddDbContext<TodoDbContext>(options =>
 
 var app = builder.Build();
 
+builder.Services.AddSingleton<TelegramBotService>();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

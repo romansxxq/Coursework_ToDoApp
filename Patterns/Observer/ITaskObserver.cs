@@ -1,11 +1,15 @@
-public class ITaskObserver
+using Models.Domain.Entities;
+using Models.Domain.Observers;
+
+public class NotificationObserver : ITaskObserver
 {
-    public void OnTaskReminder(Task task)
+    public void OnTaskReminder(TaskItem task, Reminder reminder)
     {
-        // Implementation for handling task reminder notifications
+        // Telegram notification will be sent by NotificationService
     }
-    public void OnTaskCompleted(Task task)
+
+    public void OnTaskCompleted(TaskItem task)
     {
-        // Implementation for handling task completion notifications
+        // Handle task completion
     }
 }
