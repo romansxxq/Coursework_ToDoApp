@@ -58,6 +58,7 @@ public class TaskFactory
     {
         return type switch
         {
+            RepetitionType.None => new NoRepetitionStrategy(),
             RepetitionType.Daily => new DailyRepetitionStrategy(),
             RepetitionType.Weekly => new WeeklyRepetitionStrategy(),
             RepetitionType.Monthly => new MonthlyRepetitionStrategy(),
