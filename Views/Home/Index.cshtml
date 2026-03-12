@@ -1,8 +1,66 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Test ToDo";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-lg-7">
+        <h1 class="mb-3">Test ToDo</h1>
+        <p class="text-muted">
+            Quick form to create a task and verify Telegram notifications.
+        </p>
+
+        <form id="test-todo-form" class="row g-3">
+            <div class="col-12">
+                <label for="todo-title" class="form-label">Title</label>
+                <input id="todo-title" class="form-control" type="text" placeholder="Example task" required />
+            </div>
+
+            <div class="col-12">
+                <label for="todo-description" class="form-label">Description</label>
+                <textarea id="todo-description" class="form-control" rows="3" placeholder="What should be done?"></textarea>
+            </div>
+
+            <div class="col-md-6">
+                <label for="todo-due" class="form-label">Due date (local time)</label>
+                <input id="todo-due" class="form-control" type="datetime-local" required />
+            </div>
+
+            <div class="col-md-3">
+                <label for="todo-priority" class="form-label">Priority</label>
+                <select id="todo-priority" class="form-select">
+                    <option value="0">Low</option>
+                    <option value="1" selected>Medium</option>
+                    <option value="2">High</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="todo-repetition" class="form-label">Repetition</label>
+                <select id="todo-repetition" class="form-select">
+                    <option value="0" selected>None</option>
+                    <option value="1">Daily</option>
+                    <option value="2">Weekly</option>
+                    <option value="3">Monthly</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label for="todo-chat" class="form-label">Telegram Chat ID</label>
+                <input id="todo-chat" class="form-control" type="number" placeholder="123456789" required />
+            </div>
+
+            <div class="col-12 d-grid">
+                <button class="btn btn-primary" type="submit">Create test task</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card mt-4 mt-lg-0">
+            <div class="card-body">
+                <h5 class="card-title">Result</h5>
+                <pre id="test-todo-result" class="mb-0">Submit the form to see response...</pre>
+            </div>
+        </div>
+    </div>
 </div>
