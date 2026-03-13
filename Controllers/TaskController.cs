@@ -5,7 +5,7 @@ using Services;
 
 namespace ToDo_Project.Controllers;
 
-[Route("tasks")]
+[Route("api/tasks")]
 public class TaskController : Controller
 {
     private readonly TaskService _taskService;
