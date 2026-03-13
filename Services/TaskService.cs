@@ -80,7 +80,6 @@ public class TaskService
     {
         task.Reminders.Add(new Reminder
         {
-            Id = Guid.NewGuid(),
             TaskId = task.Id,
             RemindAt = task.DueDate.AddHours(-1),
             IsSent = false
