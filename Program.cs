@@ -57,8 +57,14 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
+    name: "tasks-alias",
+    pattern: "Tasks",
+    defaults: new { controller = "Home", action = "Index" })
+    .WithStaticAssets();
+
+app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Tasks}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
