@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ToDo_Project.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
+<body class="@(ViewData["BodyClass"] ?? string.Empty)">
+    <header class="site-header">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ToDo_Project</a>
@@ -32,7 +32,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 site-main">
             @RenderBody()
         </main>
     </div>
