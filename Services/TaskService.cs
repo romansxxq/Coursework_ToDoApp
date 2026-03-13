@@ -43,7 +43,8 @@ public class TaskService
 
     public async Task<TaskItem> CreateTaskAsync(string title, string description, DateTime dueDate, TypePriority priority, RepetitionType repetition, long telegramChatId)
     {
-        var task = _taskFactory.CreateTask(title, description, dueDate, priority, repetition, telegramChatId);
+        var normalizedDueDate = NormalizeToUtc(dueDate);
+        var task = _taskFactory.CreateTask(title, description, normalizedDueDate, priority, repetition, telegramChatId);
 
         ScheduleReminder(task);
 
@@ -54,6 +55,7 @@ public class TaskService
     public async Task UpdateTaskAsync(TaskItem task)
     {
         _taskFactory.RestoreBehaviors(task);
+        task.DueDate = NormalizeToUtc(task.DueDate);
         EnsureUpcomingReminder(task);
         await _repository.UpdateTaskAsync(task);
     }
@@ -95,5 +97,17 @@ public class TaskService
         {
             ScheduleReminder(task);
         }
+    }
+
+    private static DateTime NormalizeToUtc(DateTime value)
+    {
+        if (value.Kind == DateTimeKind.Utc)
+        {
+            return value;
+        }
+
+        // Treat unspecified/local input as GMT+2 and store in UTC for PostgreSQL.
+        var unspecified = DateTime.SpecifyKind(value, DateTimeKind.Unspecified);
+        return new DateTimeOffset(unspecified, TimeSpan.FromHours(2)).UtcDateTime;
     }
 }
