@@ -15,7 +15,7 @@ public class NotificationObserver : ITaskObserver
 
     public void OnTaskCompleted(TaskItem task)
     {
-        _ = _notificationService.SendAsync(task.Id, $"Task '{task.Title}' was completed.", task.TelegramChatId);
+        _ = _notificationService.SendAsync(task.Id, $"Task '{task.Title}' was completed.");
     }
 
     public void OnTaskReminder(TaskItem task, Reminder reminder)
@@ -23,7 +23,7 @@ public class NotificationObserver : ITaskObserver
         var displayTime = reminder.RemindAt.ToUniversalTime().AddHours(2);
         _ = _notificationService.SendAsync(
             task.Id,
-            $"Reminder for task: {task.Title}. Time (GMT+2): {displayTime:yyyy-MM-dd HH:mm}",
+            $"Reminder for task:\nTitle: {task.Title}\nDescription: {task.Description}\nPriority: {task.Priority}\nTime (GMT+2): {displayTime:yyyy-MM-dd HH:mm}",
             task.TelegramChatId);
     }
 }
