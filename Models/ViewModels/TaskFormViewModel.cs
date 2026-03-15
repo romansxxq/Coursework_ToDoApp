@@ -11,7 +11,7 @@ public class TaskFormViewModel
     [Required]
     public string Title { get; set; } = string.Empty;
 
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     [Required]
     public DateTime DueDate { get; set; }

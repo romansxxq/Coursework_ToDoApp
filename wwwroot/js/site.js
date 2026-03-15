@@ -65,8 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			return "";
 		}
 		const date = new Date(value);
-		const gmt2 = new Date(date.getTime() + 2 * 60 * 60 * 1000);
-		return gmt2.toLocaleString(undefined, {
+		return date.toLocaleString(undefined, {
 			month: "short",
 			day: "numeric",
 			year: "numeric",

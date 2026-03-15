@@ -34,7 +34,7 @@ public class TaskController : Controller
     {
         var task = await _taskService.CreateTaskAsync(
             request.Title,
-            request.Description,
+            request.Description ?? string.Empty,
             request.DueDate,
             request.Priority,
             request.RepetitionType,
@@ -60,7 +60,7 @@ public class TaskController : Controller
     public sealed class CreateTaskRequest
     {
         public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
         public DateTime DueDate { get; set; }
         public TypePriority Priority { get; set; }
         public RepetitionType RepetitionType { get; set; }
