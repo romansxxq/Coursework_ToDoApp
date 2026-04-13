@@ -41,6 +41,14 @@ builder.Services.AddScoped<ITaskObserver, AnalyticsObserver>();
 builder.Services.AddHostedService<ReminderTaskScheduler>();
 
 var app = builder.Build();
+
+// Ensure database schema is up to date when running in containers.
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<TodoDbContext>();
+    dbContext.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
