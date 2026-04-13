@@ -21,8 +21,10 @@ using DomainTaskStatus = Models.Domain.Enums.TaskStatus;
 
 namespace ToDo_Project.Tests;
 
+// Remember to add the necessary using directives for your test framework (e.g., xUnit, NUnit) and mocking library (e.g., Moq)
 public class RepetitionStrategyTests
 {
+    // These tests verify that each repetition strategy calculates the next execution date correctly based on the current date.
     [Fact]
     public void DailyRepetitionStrategy_GetNextExecutionDate_AddsOneDay()
     {
@@ -33,7 +35,7 @@ public class RepetitionStrategyTests
 
         Assert.Equal(current.AddDays(1), next);
     }
-
+    // The following tests check that the WeeklyRepetitionStrategy adds seven days, the MonthlyRepetitionStrategy adds one month, and the NoRepetitionStrategy returns null as expected.
     [Fact]
     public void WeeklyRepetitionStrategy_GetNextExecutionDate_AddsSevenDays()
     {
@@ -44,7 +46,7 @@ public class RepetitionStrategyTests
 
         Assert.Equal(current.AddDays(7), next);
     }
-
+    // This test also verifies that the MonthlyRepetitionStrategy correctly handles edge cases, such as adding one month to January 31st, which should result in February 28th or 29th depending on the year.
     [Fact]
     public void MonthlyRepetitionStrategy_GetNextExecutionDate_AddsOneMonth()
     {
@@ -55,7 +57,7 @@ public class RepetitionStrategyTests
 
         Assert.Equal(current.AddMonths(1), next);
     }
-
+    // Finally, the NoRepetitionStrategy test confirms that it does not schedule any next execution date, which is appropriate for tasks that should not repeat.
     [Fact]
     public void NoRepetitionStrategy_GetNextExecutionDate_ReturnsNull()
     {
@@ -70,6 +72,7 @@ public class RepetitionStrategyTests
 
 public class TaskFactoryTests
 {
+    // These tests ensure that the DomainTaskFactory correctly initializes TaskItem instances with the provided parameters and sets up the appropriate behaviors based on the task's properties.
     [Fact]
     public void CreateTask_SetsFieldsAndInitialStatusPending()
     {
