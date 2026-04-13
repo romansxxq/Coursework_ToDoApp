@@ -10,6 +10,7 @@ public class TaskService
 {
     private readonly ITaskRepository _repository;
     private readonly DomainTaskFactory _taskFactory;
+    private static readonly TimeZoneInfo UserTimeZone = ResolveUserTimeZone();
 
     public TaskService(ITaskRepository repository, DomainTaskFactory taskFactory)
     {
@@ -83,14 +84,14 @@ public class TaskService
         task.Reminders.Add(new Reminder
         {
             TaskId = task.Id,
-            RemindAt = task.DueDate.AddHours(-1),
+            RemindAt = task.DueDate.AddMinutes(-10),
             IsSent = false
         });
     }
 
     private static void EnsureUpcomingReminder(TaskItem task)
     {
-        var reminderTime = task.DueDate.AddHours(-1);
+        var reminderTime = task.DueDate.AddMinutes(-10);
         var hasReminder = task.Reminders.Any(r => !r.IsSent && r.RemindAt == reminderTime);
 
         if (!hasReminder && task.Status != DomainTaskStatus.Completed)
@@ -106,8 +107,29 @@ public class TaskService
             return value;
         }
 
-        // Treat unspecified/local input as GMT+2 and store in UTC for PostgreSQL.
+        // Treat unspecified/local input as local time (Kyiv) and store in UTC for PostgreSQL.
         var unspecified = DateTime.SpecifyKind(value, DateTimeKind.Unspecified);
-        return new DateTimeOffset(unspecified, TimeSpan.FromHours(2)).UtcDateTime;
+        return TimeZoneInfo.ConvertTimeToUtc(unspecified, UserTimeZone);
+    }
+
+    private static TimeZoneInfo ResolveUserTimeZone()
+    {
+        var ids = new[] { "FLE Standard Time", "E. Europe Standard Time", "Europe/Kyiv" };
+
+        foreach (var id in ids)
+        {
+            try
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById(id);
+            }
+            catch (TimeZoneNotFoundException)
+            {
+            }
+            catch (InvalidTimeZoneException)
+            {
+            }
+        }
+
+        return TimeZoneInfo.Utc;
     }
 }

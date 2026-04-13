@@ -7,6 +7,7 @@ namespace Models.Domain.Patterns.Observers;
 public class NotificationObserver : ITaskObserver
 {
     private readonly NotificationService _notificationService;
+    private static readonly TimeZoneInfo UserTimeZone = ResolveUserTimeZone();
 
     public NotificationObserver(NotificationService notificationService)
     {
@@ -20,10 +21,31 @@ public class NotificationObserver : ITaskObserver
 
     public void OnTaskReminder(TaskItem task, Reminder reminder)
     {
-        var displayTime = reminder.RemindAt.ToUniversalTime().AddHours(2);
+        var displayTime = TimeZoneInfo.ConvertTimeFromUtc(reminder.RemindAt.ToUniversalTime(), UserTimeZone);
         _ = _notificationService.SendAsync(
             task.Id,
-            $"Reminder for task:\nTitle: {task.Title}\nDescription: {task.Description}\nPriority: {task.Priority}\nTime (GMT+2): {displayTime:yyyy-MM-dd HH:mm}",
+            $"Reminder for task:\nTitle: {task.Title}\nDescription: {task.Description}\nPriority: {task.Priority}\nTime (Local): {displayTime:yyyy-MM-dd HH:mm}",
             task.TelegramChatId);
+    }
+
+    private static TimeZoneInfo ResolveUserTimeZone()
+    {
+        var ids = new[] { "FLE Standard Time", "E. Europe Standard Time", "Europe/Kyiv" };
+
+        foreach (var id in ids)
+        {
+            try
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById(id);
+            }
+            catch (TimeZoneNotFoundException)
+            {
+            }
+            catch (InvalidTimeZoneException)
+            {
+            }
+        }
+
+        return TimeZoneInfo.Utc;
     }
 }
