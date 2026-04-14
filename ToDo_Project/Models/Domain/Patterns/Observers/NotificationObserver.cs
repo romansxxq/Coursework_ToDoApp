@@ -21,10 +21,10 @@ public class NotificationObserver : ITaskObserver
 
     public void OnTaskReminder(TaskItem task, Reminder reminder)
     {
-        var displayTime = TimeZoneInfo.ConvertTimeFromUtc(reminder.RemindAt.ToUniversalTime(), UserTimeZone);
+        var dueDisplayTime = TimeZoneInfo.ConvertTimeFromUtc(task.DueDate.ToUniversalTime(), UserTimeZone);
         _ = _notificationService.SendAsync(
             task.Id,
-            $"Reminder for task:\nTitle: {task.Title}\nDescription: {task.Description}\nPriority: {task.Priority}\nTime (Local): {displayTime:yyyy-MM-dd HH:mm}",
+            $"Reminder for task:\nTitle: {task.Title}\nDescription: {task.Description}\nPriority: {task.Priority}\nDeadline: {dueDisplayTime:yyyy-MM-dd HH:mm}",
             task.TelegramChatId);
     }
 
